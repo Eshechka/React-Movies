@@ -34,6 +34,9 @@ export class Search extends React.Component {
   };
 
   render() {
+    const disableFilter =
+      !(this.state.showMovie || this.state.searchingMovie) ||
+      this.props.moviesNotFound;
     return (
       <form className="col s12" onSubmit={this.handleSubmit}>
         <div className="row">
@@ -77,7 +80,7 @@ export class Search extends React.Component {
                 value=""
                 onChange={this.handleChangeFilter}
                 checked={"" === this.state.checkedFilter}
-                disabled={!(this.state.showMovie || this.state.searchingMovie)}
+                disabled={disableFilter}
               />
               <span>All</span>
             </label>
@@ -91,7 +94,7 @@ export class Search extends React.Component {
                 type="radio"
                 onChange={this.handleChangeFilter}
                 checked={"movie" === this.state.checkedFilter}
-                disabled={!(this.state.showMovie || this.state.searchingMovie)}
+                disabled={disableFilter}
               />
               <span>Movies</span>
             </label>
@@ -105,7 +108,7 @@ export class Search extends React.Component {
                 type="radio"
                 onChange={this.handleChangeFilter}
                 checked={"episode" === this.state.checkedFilter}
-                disabled={!(this.state.showMovie || this.state.searchingMovie)}
+                disabled={disableFilter}
               />
               <span>Episodes</span>
             </label>
@@ -119,7 +122,7 @@ export class Search extends React.Component {
                 type="radio"
                 onChange={this.handleChangeFilter}
                 checked={"series" === this.state.checkedFilter}
-                disabled={!(this.state.showMovie || this.state.searchingMovie)}
+                disabled={disableFilter}
               />
               <span>Series</span>
             </label>
