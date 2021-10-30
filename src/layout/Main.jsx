@@ -10,11 +10,12 @@ export class Main extends React.Component {
     movies: [],
     searchedPhraze: "",
     moviesNotFound: false,
+    isLoading: false,
   };
 
   getMovies = (searchedPhraze, filterType = "") => {
     if (searchedPhraze) {
-      this.setState({ searchedPhraze: searchedPhraze });
+      this.setState({ searchedPhraze: searchedPhraze, isLoading: true });
 
       fetch(
         `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchedPhraze}${
@@ -28,35 +29,36 @@ export class Main extends React.Component {
             moviesNotFound: !filterType
               ? !data.Search
               : this.state.moviesNotFound,
+            isLoading: false,
           })
-        );
+        )
+        .catch((err) => {
+          console.warn(err);
+          this.setState({
+            isLoading: false,
+          });
+        });
     }
   };
 
   render() {
-    const isMoviesNotFound = !!this.state.movies;
-    const isEmptyMovies = isMoviesNotFound ? !this.state.movies.length : true;
-    const isEmptySearchField = !this.state.searchedPhraze;
-    const moviesFound = isMoviesNotFound && !isEmptyMovies;
-    const isLoading = isMoviesNotFound && isEmptyMovies && !isEmptySearchField;
-
+    const { isLoading, searchedPhraze } = this.state;
     return (
       <main className="content">
         <div className="container">
+          <div className="container__preloader">
+            {isLoading ? <Preloader /> : ""}
+          </div>
           <Search
             moviesNotFound={this.state.moviesNotFound}
             getMovies={this.getMovies}
           />
-          {isEmptySearchField ? (
+          {!searchedPhraze ? (
             <div className="content__text">
               Чтобы найти фильм, забейте его название в поиск
             </div>
-          ) : isLoading ? (
-            <Preloader />
-          ) : moviesFound ? (
-            <Cards movies={this.state.movies} />
           ) : (
-            <div className="content__text">Ничего не найдено...</div>
+            <Cards movies={this.state.movies} />
           )}
         </div>
       </main>

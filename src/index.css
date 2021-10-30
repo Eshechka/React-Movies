@@ -23,15 +23,20 @@ nav {
   padding: 0 1rem;
 }
 
+.container__preloader {
+  height: 20px;
+  overflow: hidden;
+}
+
 .content {
   flex-grow: 1;
 }
-.content__text {
+
+.cards__nothing-found-text {
   font-size: 18px;
   margin-left: -0.75rem;
   margin-right: -0.75rem;
 }
-
 .cards__list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
